@@ -16,3 +16,4 @@ build/
 
 #Mail API Key
 config/mail.config.js
+config/mail.config.js
