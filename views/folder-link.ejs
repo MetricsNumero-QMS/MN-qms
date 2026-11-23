@@ -1,0 +1,19 @@
+<%- include('includes/header'); -%>
+<section class="qms-link-page">
+    <div class="qms-link-card">
+        <p class="qms-access-kicker">Shared folder</p>
+        <h1><%= folder.folder_name %></h1>
+        <p>You were given a link to this folder. Open it to view the documents you are allowed to see.</p>
+        <% if (typeof message !== 'undefined' && message && message.length) { %>
+            <p class="qms-access-msg is-err"><%= message %></p>
+        <% } %>
+        <form method="post" action="/folders/shared/<%= token %>">
+            <% if (needsPassword) { %>
+                <label for="linkPassword">Password</label>
+                <input type="password" id="linkPassword" name="password" required>
+            <% } %>
+            <button type="submit" class="lib-btn-primary">Open folder</button>
+        </form>
+    </div>
+</section>
+<%- include('includes/footer'); -%>

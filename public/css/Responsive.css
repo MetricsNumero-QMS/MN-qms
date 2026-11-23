@@ -1,0 +1,922 @@
+/* ============================================================
+   QMS global responsive
+   Loaded after Bootstrap so these rules win the cascade.
+   Breakpoints: mobile <=767, tablet/laptop 768-1599,
+   large monitor 1600 / 1920 / 2506+
+   ============================================================ */
+
+html {
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+body {
+  overflow-x: hidden;
+  min-width: 0;
+}
+
+body:not(.login-body) {
+  padding-bottom: 52px;
+  background: linear-gradient(180deg, #4d9ad4 0%, #1a78c4 50%, #0962b1 100%) !important;
+  background-attachment: fixed !important;
+}
+
+.container,
+.container-fluid {
+  max-width: 100%;
+}
+
+.flex,
+.section-charterhr,
+.section-contact,
+.section-profile {
+  width: 100% !important;
+  max-width: 100%;
+  margin-left: 0 !important;
+}
+
+.section-contact,
+.section-profile,
+.section-category,
+.section-about {
+  height: auto !important;
+  min-height: calc(100vh - 5.5rem);
+  padding-bottom: 80px;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+  height: auto !important;
+  min-height: 4.1rem;
+  padding: 0.35rem 1rem;
+}
+
+.logo {
+  max-width: 42vw;
+  height: auto;
+}
+
+.navbar-collapse {
+  background: #eaeaea;
+}
+
+nav ul li a {
+  line-height: 2.6rem;
+}
+
+/* ---------- Breadcrumbs ---------- */
+.bread-heading {
+  padding-left: clamp(12px, 5vw, 110px);
+  padding-right: 12px;
+}
+
+.bread-heading ol.breadcrumb,
+.bread-heading .breadcrumb {
+  flex-wrap: wrap;
+  background: transparent;
+}
+
+.bread-heading ol.breadcrumb > li,
+.bread-heading .breadcrumb-item,
+.bread-heading a,
+.bread-heading span {
+  margin-left: 0 !important;
+}
+
+/* ---------- Home ---------- */
+.Home {
+  display: flex;
+  align-items: center;
+  height: 19.5rem;
+  max-width: 100%;
+}
+
+.main_section {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  height: 19rem;
+  min-height: 19rem;
+  background-position: right center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.wlcme_sec {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 59.5%;
+  height: 80%;
+  margin: 0;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+.left-notifucation,
+.left-notifucation.home-dashboard {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  justify-content: center;
+  height: 12rem;
+  gap: 1.8rem;
+  padding: 8px 0 0;
+  width: 100%;
+}
+
+.left-notifucation > .notification-Home {
+  flex: 1.35 1 0;
+  min-width: 0;
+  width: auto;
+  height: 100%;
+}
+
+.left-notifucation > .Main {
+  flex: 1 1 0;
+  min-width: 0;
+  width: auto;
+  height: 100%;
+}
+
+.left-notifucation > .right-notifucation-total {
+  flex: 0.75 1 0;
+  min-width: 0;
+  width: auto;
+  height: 100%;
+}
+
+.left-notifucation .right-notifucation {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+
+.notification-Home {
+  height: 100%;
+  min-height: 0;
+}
+
+.notification-Home-p1 {
+  margin-left: 16px;
+}
+
+.spanShortText {
+  width: 100%;
+  max-width: 100%;
+  margin-left: 0;
+}
+
+/* ---------- About / Contact / Profile ---------- */
+.About-Content,
+.contact_det {
+  width: min(1100px, 94%) !important;
+  max-width: 94%;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  height: auto;
+}
+
+.contact_desc {
+  margin-left: 0 !important;
+  padding-left: clamp(12px, 5vw, 110px);
+  padding-right: 12px;
+}
+
+.section-contact .card {
+  width: 100% !important;
+  max-width: 22rem;
+  margin: 0 auto;
+}
+
+.section-contact .card-title {
+  margin-left: 0 !important;
+  text-align: center;
+}
+
+.cont_icon img {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.user_det {
+  width: min(760px, 94%) !important;
+  max-width: 94%;
+  height: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding: 24px 18px 32px;
+}
+
+.user_det .form-control {
+  width: 100%;
+}
+
+.user_det .btn,
+.section-profile .user_det .btn {
+  margin-left: 0 !important;
+}
+
+.form-actions,
+.user_det .form-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.form-actions .btn {
+  margin-left: 0 !important;
+  min-width: 140px;
+}
+
+.pswdchmsg {
+  width: min(420px, 90%);
+  margin-left: auto;
+  margin-right: auto;
+  position: static;
+}
+
+/* ---------- Category / tables / toolbar ---------- */
+.category-toolbar,
+.qms-cat-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  width: 100%;
+}
+
+.notify-btn,
+.notify-btnntfy,
+.btnbtn-info,
+.btnbtnbtn-info {
+  margin-left: 0 !important;
+}
+
+.main-datatable {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---------- Modals ---------- */
+.modal-dialog {
+  max-width: min(700px, 96vw);
+  margin: 1rem auto;
+}
+
+.modal-content,
+.edit-modal-content,
+.view-modal-content,
+.login-reg-content {
+  width: 100% !important;
+  max-width: 100%;
+  margin-left: 0 !important;
+  margin-top: 0 !important;
+  height: auto !important;
+  max-height: 90vh;
+  overflow: auto;
+}
+
+.modal-content .btn,
+.edit-modal-content .btn,
+.view-modal-content .btn {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.ExternalFiles iframe {
+  position: relative;
+  width: 100% !important;
+  height: min(70vh, 520px);
+}
+
+/* ---------- Import user buttons ---------- */
+.importCsv,
+.dwnTmp {
+  float: none;
+  margin-top: 0 !important;
+  margin-left: 0;
+}
+
+.import-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 8px 16px 16px;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+  z-index: 20;
+}
+
+/* ============================================================
+   Mobile
+   ============================================================ */
+@media (max-width: 767px) {
+  .logo {
+    width: 120px;
+    margin-left: 0.4rem;
+  }
+
+  nav ul {
+    margin-right: 0;
+  }
+
+  nav ul li {
+    display: block;
+    width: 100%;
+  }
+
+  nav ul li a {
+    line-height: 2.2rem;
+    font-size: 0.85rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  nav ul ul,
+  nav ul ul ul {
+    position: static !important;
+    opacity: 1;
+    visibility: visible;
+    display: block !important;
+    grid-template-columns: 1fr !important;
+    margin-left: 0 !important;
+    width: 100%;
+  }
+
+  .submenu {
+    margin-left: 0.6rem !important;
+    position: static !important;
+  }
+
+  .dropdown-menu {
+    position: static !important;
+    float: none;
+    width: 100%;
+    min-width: 0 !important;
+    box-shadow: none;
+  }
+
+  .dropdown-menu .submenu {
+    display: block;
+    position: static !important;
+    left: auto;
+    top: auto;
+  }
+
+  .h1_main_section {
+    font-size: 20px;
+    letter-spacing: 0.08rem;
+    padding: 1.2rem 1rem 0.6rem;
+  }
+
+  .Home {
+    height: auto;
+  }
+
+  .main_section {
+    height: auto;
+    min-height: 14rem;
+    background-position: right center;
+  }
+
+  .wlcme_sec {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 94%;
+    height: auto;
+    margin: 16px auto 20px;
+    overflow: visible;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    height: auto;
+    gap: 12px;
+    padding: 0 8px 24px;
+  }
+
+  .left-notifucation > .notification-Home,
+  .left-notifucation > .Main,
+  .left-notifucation > .right-notifucation-total {
+    flex: none;
+    width: 100%;
+    height: 10rem;
+  }
+
+  .right-notifucation hr {
+    width: 80%;
+  }
+
+  .About-Content {
+    margin-top: 20px;
+    letter-spacing: 0.5px;
+    line-height: 1.6;
+  }
+
+  .contact_det {
+    padding: 16px 10px 24px;
+    margin-top: 12px;
+  }
+
+  .section-contact .row-cols-2 > .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .user_det .col,
+  .section-profile .col,
+  .login-reg-form .col {
+    flex: 0 0 100%;
+    max-width: 100%;
+    margin-top: 8px;
+    margin-bottom: 0;
+    padding-bottom: 8px;
+  }
+
+  .user_det label {
+    float: none;
+    text-align: left;
+    display: block;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .form-actions .btn,
+  .chpwsdBtn,
+  .rsBtn {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .login_container {
+    flex-direction: column;
+  }
+
+  .searchInput input,
+  .searchInput input:placeholder-shown {
+    width: 100% !important;
+  }
+
+  .main-datatable table {
+    min-width: 640px;
+  }
+
+  .import-toolbar {
+    justify-content: stretch;
+  }
+
+  .importCsv,
+  .dwnTmp {
+    width: 100% !important;
+  }
+
+  .section-category .bread-heading {
+    text-align: left;
+  }
+
+  .footer {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
+  .cpalign {
+    text-align: center;
+  }
+}
+
+/* ============================================================
+   Tablet / small laptop
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 991px) {
+  .Home {
+    height: auto;
+  }
+
+  .main_section {
+    height: 17rem;
+    min-height: 17rem;
+  }
+
+  .wlcme_sec {
+    position: absolute;
+    top: 22px;
+    left: 18px;
+    width: 62%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .h1_main_section {
+    font-size: 22px;
+    letter-spacing: 0.12rem;
+    padding: 1.2rem 1rem 0.4rem;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex;
+    flex-wrap: wrap;
+    height: auto;
+    gap: 12px;
+  }
+
+  .left-notifucation > .notification-Home {
+    flex: 1 1 100%;
+    height: 10rem;
+  }
+
+  .left-notifucation > .Main,
+  .left-notifucation > .right-notifucation-total {
+    flex: 1 1 calc(33.33% - 12px);
+    height: 10rem;
+  }
+
+  .user_det {
+    width: min(680px, 90%) !important;
+  }
+
+  nav ul ul ul {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-collapse {
+    padding: 0.4rem 0 0.8rem;
+    max-height: calc(100vh - 4.5rem);
+    overflow-y: auto;
+  }
+
+  .dropdown-menu .dropdown-menu {
+    margin-left: 0.7rem;
+    margin-right: 0.7rem;
+    margin-bottom: 0.4rem;
+  }
+}
+
+/* ============================================================
+   Laptop and up — keep banner overlay + 4-column row
+   ============================================================ */
+@media (min-width: 992px) {
+  .Home {
+    height: 19.5rem;
+  }
+
+  .main_section {
+    position: relative;
+    height: 19rem;
+    min-height: 19rem;
+    background-position: right center;
+    background-size: cover;
+  }
+
+  .wlcme_sec {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 59.5%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    justify-content: center;
+    height: 12rem;
+    gap: 1.8rem;
+    padding: 8px 0 0;
+  }
+
+  .left-notifucation > .notification-Home {
+    flex: 1.35 1 0;
+    height: 100%;
+  }
+
+  .left-notifucation > .Main {
+    flex: 1 1 0;
+    height: 100%;
+  }
+
+  .left-notifucation > .right-notifucation-total {
+    flex: 0.75 1 0;
+    height: 100%;
+    width: auto;
+  }
+}
+
+/* ============================================================
+   Laptop (typical 1280–1599)
+   ============================================================ */
+@media (min-width: 1200px) and (max-width: 1599px) {
+  .wlcme_sec {
+    position: absolute;
+    top: 30px;
+    left: 30px;
+    width: 59.5%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .main_section {
+    height: 19rem;
+  }
+}
+
+/* ============================================================
+   Large monitor
+   ============================================================ */
+@media (min-width: 1600px) {
+  .navbar {
+    padding: 0.5rem 2rem;
+  }
+
+  .logo {
+    width: 180px;
+    height: 2.2rem;
+    max-width: none;
+  }
+
+  nav ul li a {
+    font-size: 1rem;
+    line-height: 3rem;
+  }
+
+  .bread-heading {
+    padding-left: 80px;
+  }
+
+  .h1_main_section {
+    font-size: 30px;
+  }
+
+  .Home {
+    height: 22rem;
+  }
+
+  .main_section {
+    height: 21.5rem;
+    min-height: 21.5rem;
+    background-position: right center;
+  }
+
+  .wlcme_sec {
+    position: absolute;
+    top: 32px;
+    left: 32px;
+    width: 59.5%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 13.5rem;
+    gap: 1.8rem;
+    padding: 10px 0 0;
+  }
+
+  .user_det {
+    width: min(880px, 70%) !important;
+    padding: 36px 28px 40px;
+  }
+
+  .About-Content,
+  .contact_det {
+    width: min(1280px, 86%) !important;
+  }
+
+  .main-datatable .cust-datatable > thead > tr > th,
+  .main-datatable .cust-datatable > tbody td {
+    font-size: 15px;
+    padding: 14px 16px;
+  }
+}
+
+@media (min-width: 1920px) {
+  .navbar {
+    padding: 0.6rem 2.5rem;
+  }
+
+  .logo {
+    width: 210px;
+    height: 2.5rem;
+  }
+
+  nav ul li a {
+    font-size: 1.05rem;
+  }
+
+  .h1_main_section {
+    font-size: 32px;
+    padding-top: 2.2rem;
+  }
+
+  .Home {
+    height: 24rem;
+  }
+
+  .main_section {
+    height: 23.5rem;
+    min-height: 23.5rem;
+    background-position: right center;
+  }
+
+  .wlcme_sec {
+    position: absolute;
+    top: 36px;
+    left: 36px;
+    width: 59.5%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    height: 14.5rem;
+    gap: 1.8rem;
+    padding: 12px 0 0;
+  }
+
+  .user_det {
+    width: min(980px, 62%) !important;
+  }
+
+  .About-Content,
+  .contact_det {
+    width: min(1480px, 82%) !important;
+    padding: 28px;
+  }
+
+  .footer {
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+
+  .modal-dialog {
+    max-width: min(860px, 70vw);
+  }
+}
+
+@media screen and (min-width: 2506px) {
+  .Home {
+    height: 28rem;
+    position: relative;
+  }
+
+  .Home .main_section {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: 27rem !important;
+    min-height: 27rem;
+    background-position: right center;
+  }
+
+  .wlcme_sec {
+    position: absolute !important;
+    top: 40px;
+    left: 40px;
+    width: 59.5%;
+    height: 80%;
+    margin: 0;
+  }
+
+  .left-notifucation,
+  .left-notifucation.home-dashboard {
+    display: flex !important;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: 16rem;
+    gap: 1.8rem;
+  }
+
+  .left-notifucation .notification-Home,
+  .left-notifucation .right-notifucation,
+  .left-notifucation .right-notifucation1,
+  .left-notifucation .right-notifucation-total {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    height: 100% !important;
+  }
+
+  .left-notifucation > .notification-Home {
+    width: auto !important;
+    flex: 1.35 1 0;
+  }
+
+  .left-notifucation > .Main .right-notifucation {
+    width: 100% !important;
+  }
+
+  .left-notifucation > .right-notifucation-total {
+    width: auto !important;
+    flex: 0.75 1 0;
+  }
+
+  .navbar {
+    padding: 0.75rem 3rem;
+  }
+
+  .logo {
+    width: 260px;
+    height: 3rem;
+  }
+
+  nav ul li a {
+    font-size: 1.15rem;
+    line-height: 3.4rem;
+  }
+
+  .bread-heading {
+    padding-left: 110px;
+  }
+
+  .h1_main_section {
+    font-size: 40px;
+  }
+
+  .user_det {
+    width: min(1100px, 52%) !important;
+    padding: 48px 40px;
+  }
+
+  .user_det label,
+  .user_det .form-control {
+    font-size: 18px;
+  }
+
+  .About-Content,
+  .contact_det {
+    width: min(1800px, 78%) !important;
+    font-size: 20px;
+  }
+
+  .section-contact .card {
+    max-width: 28rem;
+  }
+
+  .main-datatable .cust-datatable > thead > tr > th,
+  .main-datatable .cust-datatable > tbody td {
+    font-size: 18px;
+    padding: 18px 20px;
+  }
+
+  .footer {
+    font-size: 18px;
+    padding: 14px 24px;
+  }
+
+  .section-profile .btn,
+  .section-category .btn,
+  .section-contact .btn,
+  .loginpage .btn,
+  .user_det .btn,
+  .modal-content .btn {
+    margin-left: 0 !important;
+  }
+
+  .modal-dialog {
+    max-width: min(1040px, 56vw);
+  }
+}

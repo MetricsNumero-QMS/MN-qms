@@ -1,0 +1,98 @@
+<%- include('includes/header'); -%>
+<%- include('includes/app-shell-start'); -%> 
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12"> 
+      <section class="section-profile">
+        <% if(successMsg.length > 0) { %>
+        <div class="alert alert-success succmsg" role="alert">
+          <%= successMsg %>
+        </div>
+        <% } %>     
+        <div class="bread-heading"> 
+          <nav aria-label="breadcrumb" style="margin-top:10px;">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item active" id="" aria-current="page" style="color:#f2f2f2;font-size: 20px; font-weight: 500;">Create User</li>
+            </ol>
+          </nav>                   
+          <nav style="margin-top:-10px;" aria-label="breadcrumb">
+            <ol class="breadcrumb" >
+              <li class="" ><a href="/home" class="Bradscram-p1" style="color:#f2f2f2;">Home > &nbsp;</a></li>
+              <li class="" aria-current="page" style="color:f2f2f2;"><span class="Bradscram-p1_Span" style="color:#f2f2f2;">Create User</span></li>
+            </ol>
+          </nav>
+        </div>    
+        <div class="row import-toolbar">
+          <div class="col-12 col-md-8">                  
+            <button class="importCsv" data-backdrop="false" data-toggle="modal" data-target="#imptUsr">Create User</button>        
+              <div class="modal" id="imptUsr">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">Create  User</div>
+                      <div class="closebtn"><button class="close-btn-design" data-dismiss="modal">Close</button></div>
+                        <div class="modal-body">
+                            <form autocomplete="off" action="/importUserDb" enctype="multipart/form-data" method="post">
+                                <div class="row mb-4">                           
+                                    <div class="col-12">                                 
+                                        <input type="file" class="form-control" name="importuser_file" id="formFile" onchange="checkfile(this);"  required> 
+                                    </div>                          
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center form-actions" >
+                                    <input type="submit" value="Add User" class="btn btn-primary">
+                                </div>
+                            </form>
+                        </div>
+                  </div>
+                </div>
+            </div>
+          </div> 
+          <div class="col-12 col-md-4 dwnTmp">   
+            <a href="/downloadTmplt">Download Template</a>      
+          </div>
+        </div>
+        <div class="user_det">
+          <div class="">
+            <form class="form-inline" method="post" action="/addUser" id="updateUser">          
+              <div class="row mt-2" style="color:white;">
+                <div class="col-12 col-md-6">
+                  <label for="" >First Name</label>             
+                  <input type="text" name="firstname" class="form-control frminput" placeholder="First name" value="" required>              
+                </div>          
+                <div class="col-12 col-md-6">
+                  <label for="" >Last Name</label>
+                  <input type="text" name="lastname" class="form-control" placeholder="Last name" value="" required>
+                </div>                  
+              </div>
+              <div class="row mt-2" style="color:white;">
+                <div class="col-12 col-md-6">
+                  <label for="">Username</label>
+                  <input type="text" name="username" class="form-control" placeholder="Username" value="" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="" >Email Address</label>
+                  <input type="text" name="email" class="form-control" placeholder="Email address" value="" required>
+                </div>          
+              </div>
+              <div class="row mt-2" style="color:white;">
+                <div class="col-12 col-md-6">
+                  <label for="">Department</label>
+                  <input type="text" name="department" class="form-control" placeholder="Department" value="" required>
+                </div>
+                <div class="col-12 col-md-6">
+                  <label for="" >Manager</label>
+                  <input type="text" name="manager" class="form-control" placeholder="Manager" value="" required>
+                </div>          
+              </div> 
+              <div class="row mt-2 form-actions" style="color:white;">
+                <button type="submit" class="btn" style="background-color:rgb(46, 46, 146) !important;color:white">Add User</button>
+                <button type="button" id="resetForm" class="btn" style="background-color: rgb(70, 70, 71) !important;color: white;">Cancel</button>
+              </div>
+            </form> 
+          </div>                       
+        </div> 
+      </section>
+    </div>
+  </div>
+</div>
+<%- include('includes/app-shell-end'); -%>
+<%- include('includes/footer'); -%> 

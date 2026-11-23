@@ -1,0 +1,59 @@
+<%- include('includes/header'); -%>
+<%- include('includes/app-shell-start'); -%>
+<%
+  var profile = typeof user !== 'undefined' && user ? user : {};
+  var profileName = String(profile.username || '').trim();
+  var profileEmail = String(profile.emp_email || '').trim();
+  var profileDept = String(profile.department || '').trim();
+  var profileInitial = (profileName || profileEmail || 'U').replace(/[^A-Za-z0-9]/g, ' ').trim().charAt(0).toUpperCase() || 'U';
+  var deptList = (typeof departments !== 'undefined' && departments) ? departments.slice() : [];
+  if (profileDept && deptList.indexOf(profileDept) === -1) deptList.unshift(profileDept);
+%>
+<section class="profile-page">
+  <div class="profile-card">
+    <header class="profile-head">
+      <div>
+        <h1><i class="fa fa-user" aria-hidden="true"></i> User profile</h1>
+        <nav class="profile-crumbs" aria-label="Breadcrumb">
+          <a href="/home">Home</a>
+          <span class="profile-crumb-sep" aria-hidden="true">›</span>
+          <span class="is-current">User profile</span>
+        </nav>
+      </div>
+    </header>
+
+    <div class="profile-identity">
+      <span class="profile-avatar" aria-hidden="true"><%= profileInitial %></span>
+      <div>
+        <strong><%= profileName || 'Your account' %></strong>
+        <span><%= profileEmail %></span>
+      </div>
+    </div>
+
+    <% if (notice) { %><p class="profile-ok" role="status"><%= notice %></p><% } %>
+    <% if (error) { %><p class="profile-err" role="alert"><%= error %></p><% } %>
+
+    <form class="profile-form" method="post" action="/userProfile" id="profileForm" autocomplete="off">
+      <label for="profileUsername">Username <span class="profile-req" aria-hidden="true">*</span></label>
+      <input type="text" id="profileUsername" name="username" maxlength="20" required value="<%= profileName %>" placeholder="Username">
+
+      <label for="profileEmail">Email <span class="profile-req" aria-hidden="true">*</span></label>
+      <input type="email" id="profileEmail" name="email" maxlength="155" required value="<%= profileEmail %>" placeholder="name@company.com">
+
+      <label for="profileDept">Department <span class="profile-req" aria-hidden="true">*</span></label>
+      <select id="profileDept" name="department" required>
+        <option value="">Select</option>
+        <% deptList.forEach(function (name) { %>
+        <option value="<%= name %>"<%= profileDept === name ? ' selected' : '' %>><%= name %></option>
+        <% }) %>
+      </select>
+
+      <div class="profile-actions">
+        <button type="submit" class="profile-save">Update profile</button>
+        <a class="profile-cancel" href="/home">Cancel</a>
+      </div>
+    </form>
+  </div>
+</section>
+<%- include('includes/app-shell-end'); -%>
+<%- include('includes/footer'); -%>

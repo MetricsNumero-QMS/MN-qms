@@ -1,0 +1,27 @@
+<div class="qms-ver-overlay" id="qmsVerPanel" hidden>
+    <div class="qms-ver-card" role="dialog" aria-labelledby="qmsVerTitle">
+        <div class="qms-ver-head">
+            <div>
+                <p class="qms-ver-kicker">Version history</p>
+                <h2 id="qmsVerTitle">Document versions</h2>
+            </div>
+            <button type="button" class="qms-ver-close" id="qmsVerClose" aria-label="Close">&times;</button>
+        </div>
+        <p class="qms-ver-file" id="qmsVerFile"></p>
+        <div class="qms-ver-list" id="qmsVerList">Loading history…</div>
+        <div class="qms-ver-restore-form" id="qmsVerRestore" hidden>
+            <p>Restore will create a <strong>new current version</strong>. Previous snapshots stay in history.</p>
+            <div class="qms-ver-bumps">
+                <label><input type="radio" name="qmsVerRestoreBump" value="minor" checked> Minor</label>
+                <label><input type="radio" name="qmsVerRestoreBump" value="major"> Major</label>
+            </div>
+            <label for="qmsVerRestoreComment">Change comment</label>
+            <textarea id="qmsVerRestoreComment" rows="3" maxlength="500" placeholder="Why is this version being restored?"></textarea>
+            <p class="qms-ver-msg" id="qmsVerMsg" hidden></p>
+            <div class="qms-ver-restore-actions">
+                <button type="button" class="qms-ver-btn ghost" id="qmsVerRestoreCancel">Cancel</button>
+                <button type="button" class="qms-ver-btn primary" id="qmsVerRestoreGo">Restore as new version</button>
+            </div>
+        </div>
+    </div>
+</div>

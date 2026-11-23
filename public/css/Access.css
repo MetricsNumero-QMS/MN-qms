@@ -1,0 +1,169 @@
+.qms-access-modal,
+.lib-modal.qms-access-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(16, 28, 48, 0.45);
+    z-index: 80;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px 24px;
+    overflow: auto;
+}
+.qms-access-modal[hidden] { display: none; }
+.qms-access-card {
+    width: min(560px, 100%);
+    background: #fff;
+    border-radius: 16px;
+    padding: 22px 24px 28px;
+    box-shadow: 0 18px 50px rgba(16, 36, 72, 0.18);
+}
+.qms-access-card-simple {
+    width: min(560px, 100%);
+}
+.qms-access-head {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: flex-start;
+}
+.qms-access-kicker {
+    margin: 0;
+    color: #5d6b82;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.qms-access-head h2,
+.qms-link-card h1 {
+    margin: 4px 0 0;
+    font-size: 22px;
+    color: #12315d;
+}
+.qms-access-close {
+    border: 0;
+    background: transparent;
+    font-size: 28px;
+    line-height: 1;
+    color: #5d6b82;
+    cursor: pointer;
+}
+.qms-access-msg { margin: 10px 0; font-size: 13px; }
+.qms-access-msg.is-ok { color: #0f7a45; }
+.qms-access-msg.is-err { color: #c2410c; }
+.qms-access-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 8px 0 16px;
+    color: #4b5b73;
+    font-size: 13px;
+}
+.qms-access-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin-bottom: 16px;
+}
+.qms-access-grid h3 {
+    margin: 0 0 8px;
+    font-size: 14px;
+    color: #16315d;
+}
+.qms-access-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+.qms-access-table th,
+.qms-access-table td {
+    text-align: left;
+    padding: 8px 6px;
+    border-bottom: 1px solid #eef2f7;
+    vertical-align: top;
+}
+.qms-access-table button {
+    border: 0;
+    background: #eef3fb;
+    color: #16315d;
+    border-radius: 8px;
+    padding: 4px 8px;
+    cursor: pointer;
+    margin: 0 4px 4px 0;
+}
+.qms-access-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 10px 0 14px;
+}
+.qms-access-form input,
+.qms-access-form select,
+#qmsAccessLocked textarea,
+#qmsAccessLocked select {
+    border: 1px solid #d5dde8;
+    border-radius: 8px;
+    padding: 8px 10px;
+    min-width: 140px;
+    font-size: 13px;
+}
+.qms-access-linkout {
+    font-size: 12px;
+    word-break: break-all;
+    background: #f3f7fd;
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+.qms-alert-wrap { position: relative; }
+.qms-alert-menu {
+    position: absolute;
+    right: 0;
+    top: 48px;
+    width: 340px;
+    background: #fff;
+    border: 1px solid #d5dde8;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(16, 36, 72, 0.14);
+    padding: 8px;
+    z-index: 50;
+    max-height: 420px;
+    overflow: auto;
+}
+.qms-alert-menu[hidden] { display: none; }
+.qms-alert-item {
+    display: block;
+    padding: 10px;
+    border-radius: 8px;
+    text-decoration: none;
+    color: #16315d;
+}
+.qms-alert-item strong { display: block; font-size: 13px; }
+.qms-alert-item span { display: block; font-size: 12px; color: #5d6b82; margin-top: 3px; }
+.qms-alert-item.is-unread { background: #eef5ff; }
+.qms-alert-empty { margin: 12px; color: #6b7a90; font-size: 13px; }
+.qms-alert-readall {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: #12368c;
+    padding: 8px;
+    cursor: pointer;
+}
+.qms-link-page {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+}
+.qms-link-card {
+    width: min(480px, 100%);
+    background: #fff;
+    border-radius: 16px;
+    padding: 28px;
+    box-shadow: 0 12px 30px rgba(16, 36, 72, 0.1);
+}
+@media (max-width: 860px) {
+    .qms-access-grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/x-icon" href="/img/MN-fav-icon-blue.png">
+<title>Home - MN QMS Tool Beta</title>
+<link rel="stylesheet" href="/css/Style.css">
+<link rel="stylesheet" href="/css/Emoji.css">
+<link rel="stylesheet" href="/css/CharterHr.css">
+<link rel="stylesheet" href="/css/About.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.14/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/css/Responsive.css">
+<link rel="stylesheet" href="/css/Login.css?v=20261010l">
+
+<!-- for dropdown -->
+<!-- <link href="css/vgnav.css" rel="stylesheet" type="text/css">
+<link href="css/vgnav-theme.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap-grid.min.css">
+<link rel="stylesheet" href="demo.css" /> -->
+<!-- Dropdown 1 -->
+<!-- <link rel="stylesheet" type="text/css" href="css/responsive-nav.css" />
+<link rel="stylesheet" type="text/css" href="css/themes.css" /> -->    
+</head>
+<body class="login-body">
+<div class="container-fluid loginpage">
+  <div class="login-header">
+    <img src="/img/MN-Logo-white.png" alt="MetricsNumero" class="login-logo">
+    <a href="/releaseNote" class="login-help">Help &nbsp;<i class="fa fa-question-circle fa-1x" aria-hidden="true"></i></a>
+  </div>
+  <div class="d-flex justify-content-center align-items-center login-main">
+    <div class="user_card qms-login-card" data-vldmsg="<% if(message.length > 0) { %>  <%= message %>  <% } %>">
+      <% var resetTokenValue = (typeof resetToken === 'string') ? resetToken : ''; %>
+      <div class="login-title"><%= resetTokenValue ? 'Reset password' : 'Welcome back' %></div>
+      <p class="qms-login-sub"><%= resetTokenValue ? 'Choose a new password for ' + resetEmail : 'Sign in to QMS' %></p>
+      <%
+        var signupNoticeText = (typeof signupNotice === 'string') ? signupNotice : '';
+      %>
+      <p class="login-ok" <% if (!signupNoticeText) { %>hidden<% } %>><%= signupNoticeText %></p>
+      <%
+        var loginMessage = '';
+        if (typeof message === 'string') loginMessage = message;
+        else if (message && message.length) loginMessage = [].concat(message).filter(Boolean).join(' ');
+      %>
+      <p class="login-error"><%= loginMessage || 'Invalid username and password' %></p>
+      <div class="d-flex justify-content-center form_container">
+        <% if (!resetTokenValue) { %>
+          <form method="post" action="/signin" id="login" class="login-form">
+          <input type="hidden" name="next" value="<%= typeof next !== 'undefined' ? next : '' %>">
+          <div class="qms-login-field">
+              <span class="qms-login-icon"><i class="fas fa-user"></i></span>
+            <input type="email" name="username" id="inputVldt" class="form-control input_user" value="" placeholder="Email address" autocomplete="username" required >
+          </div>
+          <div class="qms-login-field qms-login-field-pass">
+              <span class="qms-login-icon"><i class="fas fa-lock"></i></span>
+            <input type="password" name="passwd" id="loginPass" class="form-control input_pass" value="" placeholder="Password" autocomplete="current-password" required>
+            <button type="button" class="qms-pass-toggle" aria-label="Show password" title="Show password">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div class="login-forgot">
+            <a href="#" data-toggle="modal" data-target="#forgot" data-bs-toggle="modal" data-bs-target="#forgot">Forgot password?</a>
+          </div>
+            <div class="d-flex justify-content-center mt-3 login_container">
+             <button type="submit" name="button" class="btn login_btn">Login</button>
+             <button type="button" name="button" class="btn cls_btn">Cancel</button>
+            </div>
+        </form>
+        <% } else { %>
+        <% var resetErrorText = (typeof resetError === 'string') ? resetError : ''; %>
+        <form method="post" action="/reset-password/<%= resetTokenValue %>" id="passwordResetForm" class="login-form" novalidate>
+          <div class="qms-login-field qms-login-field-pass">
+            <span class="qms-login-icon"><i class="fas fa-lock"></i></span>
+            <input type="password" name="password" id="resetPass" class="form-control input_pass" placeholder="New password" maxlength="64" autocomplete="new-password" required>
+            <button type="button" class="qms-pass-toggle" aria-label="Show password" title="Show password"><i class="fas fa-eye"></i></button>
+          </div>
+          <div class="qms-login-field qms-login-field-pass">
+            <span class="qms-login-icon"><i class="fas fa-lock"></i></span>
+            <input type="password" name="confirmPassword" id="resetPass2" class="form-control input_pass" placeholder="Confirm password" maxlength="64" autocomplete="new-password" required>
+            <button type="button" class="qms-pass-toggle" aria-label="Show password" title="Show password"><i class="fas fa-eye"></i></button>
+          </div>
+          <p class="login-reg-hint">Use 8–64 characters with uppercase, lowercase, a number, and a symbol.</p>
+          <p class="login-reg-msg" id="resetMsg" <% if (!resetErrorText) { %>hidden<% } %>><%= resetErrorText %></p>
+          <div class="d-flex justify-content-center mt-3 login_container">
+            <button type="submit" class="btn login_btn">Update password</button>
+            <a href="/login" class="btn cls_btn">Back to sign in</a>
+          </div>
+        </form>
+        <% } %>
+      </div>
+
+      <% if (!resetTokenValue) { %>
+      <div class="mt-4">
+        <div class="d-flex justify-content-center links login-links">
+          New to MN Organization? &nbsp; <a href="#" class="ml-2 req_accs" data-toggle="modal" data-target="#reg" data-bs-toggle="modal" data-bs-target="#reg">Request Access</a>
+        </div>
+      </div>
+      <% } %>
+    </div>
+  </div>
+</div>
+<!-- <div class="page-loader">
+  <span class="loader">Loading</span>  
+</div> -->
+<div class="footer">
+  <div class="Header-button">
+      <div style="text-align:center;color:#444646"><small>&copy; Copyright 2025, MetricsNumero | QMS Tool V1.0 Beta</small></div>        
+
+      <!--<div class="footer-menu">
+          <a href="http://access.pulsehrm.com">PulseHRM</a>
+          <a href="http://pms.alpha-numero.com/guest/login">ANEX</a>
+          <a href="https://netorg755788.sharepoint.com/sites/AN_Intranet">IntraNet</a>
+      </div>-->
+  </div>
+</div>
+<div class="modal" id="forgot" tabindex="-1" role="dialog" aria-labelledby="loginForgotTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered login-reg-dialog login-forgot-dialog" role="document">
+    <div class="modal-content login-reg-content">
+      <div class="login-reg-head">
+        <h2 id="loginForgotTitle">Forgot password</h2>
+        <button type="button" class="login-reg-x" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+      </div>
+      <%
+        var forgotErrorText = (typeof forgotError === 'string') ? forgotError : '';
+        var forgotEmailValue = (typeof forgotEmail === 'string') ? forgotEmail : '';
+      %>
+      <form class="login-reg-form" method="post" action="/forgot-password" id="forgotForm" novalidate>
+        <p class="login-reg-hint login-forgot-lead">Enter the email address for your account. A reset link will be sent if it is registered.</p>
+        <label for="forgotEmail">Email id <span class="lib-req" aria-hidden="true">*</span></label>
+        <input type="email" id="forgotEmail" name="email" class="form-control" placeholder="name@company.com" maxlength="155" value="<%= forgotEmailValue %>" required>
+        <p class="login-reg-msg" id="forgotMsg" <% if (!forgotErrorText) { %>hidden<% } %>><%= forgotErrorText %></p>
+        <div class="login-reg-actions">
+          <button type="submit" class="btn login-reg-btn login-reg-btn-primary">Send reset link</button>
+          <button type="button" class="btn login-reg-btn login-reg-btn-cancel" data-dismiss="modal" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<div class="modal" id="reg" tabindex="-1" role="dialog" aria-labelledby="loginRegTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered login-reg-dialog" role="document">
+    <div class="modal-content login-reg-content">
+      <div class="login-reg-head">
+        <h2 id="loginRegTitle">Sign up</h2>
+        <button type="button" class="login-reg-x" data-dismiss="modal" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+      </div>
+      <%
+        var signupErrorText = (typeof signupError === 'string') ? signupError : '';
+        var signupUserValue = (typeof signupUser === 'string') ? signupUser : '';
+        var signupEmailValue = (typeof signupEmail === 'string') ? signupEmail : '';
+      %>
+      <form class="login-reg-form" method="post" action="/signup" id="updateUser" novalidate>
+        <div class="login-reg-grid">
+          <div>
+            <label for="regUser">Username <span class="lib-req" aria-hidden="true">*</span></label>
+            <input type="text" id="regUser" name="username" class="form-control" placeholder="Username" maxlength="20" value="<%= signupUserValue %>" required>
+          </div>
+          <div>
+            <label for="regEmail">Email id <span class="lib-req" aria-hidden="true">*</span></label>
+            <input type="email" id="regEmail" name="email" class="form-control" placeholder="name@company.com" maxlength="155" value="<%= signupEmailValue %>" required>
+          </div>
+          <div>
+            <label for="regPass">Password <span class="lib-req" aria-hidden="true">*</span></label>
+            <input type="password" id="regPass" name="password" class="form-control" placeholder="Password" maxlength="64" autocomplete="new-password" required>
+          </div>
+          <div>
+            <label for="regPass2">Confirmed password <span class="lib-req" aria-hidden="true">*</span></label>
+            <input type="password" id="regPass2" name="confirmPassword" class="form-control" placeholder="Confirm password" maxlength="64" autocomplete="new-password" required>
+          </div>
+        </div>
+        <p class="login-reg-hint">Use 8–64 characters with uppercase, lowercase, a number, and a symbol.</p>
+        <p class="login-reg-msg" id="regMsg" <% if (!signupErrorText) { %>hidden<% } %>><%= signupErrorText %></p>
+        <div class="login-reg-actions">
+          <button type="submit" class="btn login-reg-btn login-reg-btn-primary">Sign up</button>
+          <button type="button" id="resetForm" class="btn login-reg-btn login-reg-btn-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/js/Index.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.14/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="/js/CharterHr.js"></script> 
+
+<script>
+$(document).ready(function() {
+  function strongPassword(value) {
+    return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,64}$/.test(value);
+  }
+  $('#forgotForm').on('submit', function (e) {
+    var email = $.trim($('#forgotEmail').val());
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      e.preventDefault();
+      $('#forgotMsg').text('Enter a valid email address.').prop('hidden', false);
+    }
+  });
+  $('#passwordResetForm').on('submit', function (e) {
+    var password = $('#resetPass').val();
+    var confirmPassword = $('#resetPass2').val();
+    var msg = '';
+    if (!password || !confirmPassword) msg = 'Password and confirmed password are required.';
+    else if (!strongPassword(password)) msg = 'Use 8–64 characters with uppercase, lowercase, a number, and a symbol.';
+    else if (password !== confirmPassword) msg = 'Password and confirmed password must match.';
+    if (msg) {
+      e.preventDefault();
+      $('#resetMsg').text(msg).prop('hidden', false);
+    }
+  });
+  $('#updateUser').on('submit', function (e) {
+    var username = $.trim($('#regUser').val());
+    var email = $.trim($('#regEmail').val());
+    var password = $('#regPass').val();
+    var confirmPassword = $('#regPass2').val();
+    var msg = '';
+    if (!username || !email || !password || !confirmPassword) {
+      msg = 'Username, email id, password, and confirmed password are required.';
+    } else if (username.length > 20) {
+      msg = 'Username must be 20 characters or fewer.';
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      msg = 'Enter a valid email id.';
+    } else if (!strongPassword(password)) {
+      msg = 'Use 8–64 characters with uppercase, lowercase, a number, and a symbol.';
+    } else if (password !== confirmPassword) {
+      msg = 'Password and confirmed password must match.';
+    }
+    if (msg) {
+      e.preventDefault();
+      $('#regMsg').text(msg).prop('hidden', false);
+    }
+  });
+  <% if (typeof signupOpen !== 'undefined' && signupOpen) { %>
+  var regEl = document.getElementById('reg');
+  if (regEl && window.bootstrap && bootstrap.Modal) new bootstrap.Modal(regEl).show();
+  <% } %>
+  <% if (typeof forgotOpen !== 'undefined' && forgotOpen) { %>
+  var forgotEl = document.getElementById('forgot');
+  if (forgotEl && window.bootstrap && bootstrap.Modal) new bootstrap.Modal(forgotEl).show();
+  <% } %>
+  var chkAltMsg = $(".user_card").data('vldmsg');  
+  if(chkAltMsg !== 'undefined' && chkAltMsg.length > 0){ 
+    $('.user_card').addClass('is-error');
+    $('.user_card p.login-error').css("visibility","visible");
+    $('.user_card p.login-error').delay(2000).fadeOut();   
+    $('.input_user').css('border-color','red');
+    $('.input_pass').css('border-color','red');
+    setTimeout(function() {      
+    $('.input_user').css('border-color', '');
+    $('.input_pass').css('border-color', '');
+    $('.user_card').removeClass('is-error');
+    }, 7000);
+  }
+
+  $(document).on('click', '.qms-pass-toggle', function () {
+    var $input = $(this).siblings('input');
+    if (!$input.length) $input = $('#loginPass');
+    var hidden = $input.attr('type') === 'password';
+    $input.attr('type', hidden ? 'text' : 'password');
+    $(this).toggleClass('is-on', hidden);
+    $(this).find('i').toggleClass('fa-eye', !hidden).toggleClass('fa-eye-slash', hidden);
+    $(this).attr('aria-label', hidden ? 'Hide password' : 'Show password');
+    $(this).attr('title', hidden ? 'Hide password' : 'Show password');
+  });
+});
+</script>    
+</body>
+</html>

@@ -1,0 +1,50 @@
+<div class="qms-access-modal" id="qmsAccessModal" hidden>
+    <div class="qms-access-card qms-access-card-simple" role="dialog" aria-labelledby="qmsAccessTitle">
+        <div class="qms-access-head">
+            <div>
+                <p class="qms-access-kicker">Who has access</p>
+                <h2 id="qmsAccessTitle">Folder access</h2>
+            </div>
+            <button type="button" class="qms-access-close" id="qmsAccessClose" aria-label="Close">&times;</button>
+        </div>
+        <p class="qms-access-msg" id="qmsAccessMsg" hidden></p>
+        <div id="qmsAccessLocked" hidden>
+            <p>You do not have access to this folder.</p>
+            <label for="qmsAccessReqRole">Access needed</label>
+            <select id="qmsAccessReqRole">
+                <option value="viewer">View</option>
+                <option value="auditor">Audit</option>
+                <option value="editor">Edit</option>
+            </select>
+            <label for="qmsAccessReqMsg">Message</label>
+            <textarea id="qmsAccessReqMsg" rows="3" maxlength="400" placeholder="Why you need this folder"></textarea>
+            <button type="button" class="lib-btn-primary" id="qmsAccessRequestBtn">Request access</button>
+        </div>
+        <div id="qmsAccessBody">
+            <div class="qms-access-meta" id="qmsAccessMeta"></div>
+            <section>
+                <div id="qmsAccessInvite">
+                    <h3>Invite member</h3>
+                    <div class="qms-access-form">
+                        <button type="button" class="lib-btn-primary" id="qmsAccessInviteBtn">Invite member</button>
+                    </div>
+                </div>
+                <h3>Grant user</h3>
+                <div class="qms-access-form" id="qmsAccessGrantUser">
+                    <select id="qmsAccessUser"></select>
+                    <select id="qmsAccessUserRole">
+                        <option value="viewer">Viewer</option>
+                        <option value="auditor">Auditor</option>
+                        <option value="editor">Editor</option>
+                        <option value="owner">Owner</option>
+                    </select>
+                    <button type="button" class="lib-btn-primary" id="qmsAccessGrantUserBtn">Grant user</button>
+                </div>
+                <table class="qms-access-table">
+                    <thead><tr><th>User</th><th>Role</th><th></th></tr></thead>
+                    <tbody id="qmsAccessRows"></tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+</div>

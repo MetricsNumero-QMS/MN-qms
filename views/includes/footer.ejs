@@ -1,0 +1,67 @@
+<div class="footer">
+    <div class="Header-button">
+        <div class="cpalign"><small>&copy; Copyright 2023, Metrics Numero | QMS Tool V1.0 Beta</small></div>        
+        <!--<div class="footer-menu">
+            <a href="http://access.pulsehrm.com">PulseHRM</a>
+            <a href="http://pms.alpha-numero.com/guest/login">ANEX</a>
+            <a href="https://netorg755788.sharepoint.com/sites/AN_Intranet">IntraNet</a>
+        </div>-->
+    </div>
+</div>
+<script src="js/Index.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.11/js/jquery.dataTables.min.js"></script>
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+<script src="js/CharterHr.js?v=20261008b"></script>
+<script src="js/Folders.js?v=20261006a"></script>
+<script src="js/AppShell.js?v=20260925g"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="js/Dashboard.js?v=20260925a"></script>
+<script src="js/Library.js?v=20261011b"></script>
+<script src="js/DocEditor.js?v=20261008a"></script>
+<script src="js/Access.js?v=20261009a"></script>
+<script src="js/Versions.js?v=20261008e"></script>
+<script src="js/jquery.Wload.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.5/dist/jquery.validate.js"></script>
+<script src="js/jquery_validate.js?v=20261006c"></script>
+<script src="js/jAlert.js"></script>
+<script src="js/jAlert-functions.js"></script>
+<script>
+// $(window).on('load', function(){
+//     $('body').Wload({text:' Loading'});
+//     $('body').Wload('hide',{time:1000});    
+// });
+
+$(document).ready(function() {  
+    $('.loginmsg').delay(2000).fadeOut();      
+    $('.login_btn').click(function(){      
+        var  emailAddress = $('.input_user').val();
+        var  idx          = emailAddress.indexOf('@alpha-numero.com');
+        var  idxMn        = emailAddress.indexOf('@metricsnumero.com');
+        if($('#inputVldt').val().length > 0){
+        if (idx == -1 && idxMn == -1) {
+        alert("Please enter official mail id like xyz@metricsnumero.com."); 
+         document.getElementById('inputVldt').focus();    
+        $('#inputVldt').focus(function() {
+        $(this).val(' ');
+        });          
+        return false;        
+        }
+        }
+
+    });
+});    
+</script>    
+<!-- <script type='text/javascript' charset='UTF-8'>
+(function (config) {  
+    config.urlCapture = { 
+        filterURLQuery: ["menu", "submenu"]
+    }
+})(window['adrum-config'] || (window['adrum-config'] = {}));
+</script>        -->
+<!-- <script src='//cdn.appdynamics.com/adrum/adrum-latest.js' type='text/javascript' charset='UTF-8'></script> -->
+</body>
+</html>

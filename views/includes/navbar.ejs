@@ -1,0 +1,90 @@
+<header class="qms-header">
+  <%
+    var path = typeof navPath !== 'undefined' ? navPath : '';
+    var activeMenu = typeof navMenu !== 'undefined' ? String(navMenu) : '';
+    var activeSub = typeof navSubmenu !== 'undefined' ? String(navSubmenu) : '';
+    var isHome = (path === '/home' || path === '/');
+    var isCategory = path.indexOf('/category') === 0;
+    var isAbout = (path === '/about' || path === '/contact' || path === '/releaseNote');
+    var isProfile = (path === '/userProfile' || path === '/paswdChange' || path === '/importUser');
+    var qmsMenus = ['Charter','Checklist','External','Forms','Guideline','Manual','Process'];
+    var qmsDepts = ['Qag','Admin','Bd','Flow','Global','Hr','It','Purchase','VLSI'];
+  %>
+  <nav class="navbar navbar-expand-lg qms-navbar">
+    <div class="qms-nav-inner">
+      <a class="qms-brand" href="/home">
+        <img src="img/MN-Logo-white.png" alt="MetricsNumero" class="logo">
+      </a>
+
+      <button class="navbar-toggler qms-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="qms-toggler-bar"></span>
+        <span class="qms-toggler-bar"></span>
+        <span class="qms-toggler-bar"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto qms-nav-links">
+          <li class="nav-item<%= isHome ? ' is-active' : '' %>">
+            <a class="nav-link<%= isHome ? ' is-active' : '' %>" href="/home"><i class="fas fa-home"></i><span>Home</span></a>
+          </li>
+
+          <li class="nav-item qms-cat<%= isCategory ? ' is-active' : '' %>">
+            <button type="button" class="nav-link qms-menu-btn<%= isCategory ? ' is-active' : '' %>">
+              <i class="fas fa-th-large"></i><span>Category</span>
+              <span class="qms-caret" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <ul class="qms-flyout qms-cat-panel">
+              <% qmsMenus.forEach(function(menuName){
+                   var typeActive = isCategory && activeMenu.toLowerCase() === menuName.toLowerCase();
+              %>
+              <li class="qms-cat-type<%= typeActive ? ' is-active' : '' %>">
+                <button type="button" class="qms-type-btn<%= typeActive ? ' is-active' : '' %>">
+                  <span><%= menuName %></span>
+                  <span class="qms-caret qms-caret-right" aria-hidden="true"><i class="fas fa-chevron-right"></i></span>
+                </button>
+                <ul class="qms-flyout qms-dept-flyout">
+                  <% qmsDepts.forEach(function(dept){
+                       var deptActive = typeActive && activeSub.toLowerCase() === dept.toLowerCase();
+                  %>
+                  <li>
+                    <a class="dropdown-item brdcrb<%= deptActive ? ' is-active' : '' %>" href="/category?menu=<%= menuName %>&submenu=<%= dept %>"><%= dept %></a>
+                  </li>
+                  <% }); %>
+                </ul>
+              </li>
+              <% }); %>
+            </ul>
+          </li>
+
+          <li class="nav-item qms-drop<%= isAbout ? ' is-active' : '' %>">
+            <button type="button" class="nav-link qms-menu-btn<%= isAbout ? ' is-active' : '' %>">
+              <i class="fas fa-info-circle"></i><span>About QMS</span>
+              <span class="qms-caret" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <ul class="qms-flyout qms-simple-menu">
+              <li><a class="dropdown-item<%= path === '/about' ? ' is-active' : '' %>" href="/about"><i class="fas fa-book-open"></i> More Info</a></li>
+              <li><a class="dropdown-item<%= path === '/contact' ? ' is-active' : '' %>" href="/contact"><i class="fas fa-envelope"></i> Contact us</a></li>
+              <li><a class="dropdown-item<%= path === '/releaseNote' ? ' is-active' : '' %>" href="/releaseNote"><i class="fas fa-question-circle"></i> Help</a></li>
+            </ul>
+          </li>
+
+          <li class="nav-item qms-drop qms-user-item<%= isProfile ? ' is-active' : '' %>">
+            <button type="button" class="nav-link qms-menu-btn qms-user-trigger<%= isProfile ? ' is-active' : '' %>">
+              <span class="qms-avatar"><i class="fas fa-user"></i></span>
+              <span>Profile</span>
+              <span class="qms-caret" aria-hidden="true"><i class="fas fa-chevron-down"></i></span>
+            </button>
+            <ul class="qms-flyout qms-simple-menu qms-simple-menu-end">
+              <li><a class="dropdown-item<%= path === '/userProfile' ? ' is-active' : '' %>" href="/userProfile"><i class="fas fa-id-card"></i> View profile</a></li>
+              <li><a class="dropdown-item<%= path === '/paswdChange' ? ' is-active' : '' %>" href="/paswdChange"><i class="fas fa-key"></i> Change Password</a></li>
+              <li><a class="dropdown-item<%= path === '/importUser' ? ' is-active' : '' %>" href="/importUser"><i class="fas fa-user-plus"></i> Import User</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item qms-exit" href="/logout"><i class="fas fa-sign-out-alt"></i> Exit</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<script src="js/Navbar.js"></script>

@@ -1,0 +1,184 @@
+<%- include('includes/header'); -%>
+<%- include('includes/app-shell-start'); -%>
+<%
+  function fmt(n) { return Number(n || 0).toLocaleString('en-US'); }
+  function trendClass(t) { if (!t || t.up === null) return 'flat'; return t.up ? 'up' : 'down'; }
+  function fileExt(name) {
+    var m = String(name || '').toLowerCase().match(/\.([a-z0-9]+)$/);
+    return m ? m[1] : 'file';
+  }
+  function fileClass(name) {
+    var ext = fileExt(name);
+    if (['doc','docx'].indexOf(ext) !== -1) return 'docx';
+    if (ext === 'pdf') return 'pdf';
+    if (['xls','xlsx'].indexOf(ext) !== -1) return 'xlsx';
+    return 'default';
+  }
+  function splitPath(p) {
+    var parts = String(p || '').split('/');
+    return { menu: parts[0] || '', sub: parts[1] || '' };
+  }
+  var catColors = ['#3b82f6','#f59e0b','#8b5cf6','#10b981','#f43f5e','#6366f1','#94a3b8'];
+  var statusRows = [
+    { label: 'Approved', key: 'approved', color: '#22c55e' },
+    { label: 'Review', key: 'review', color: '#eab308' },
+    { label: 'Draft', key: 'draft', color: '#38bdf8' },
+    { label: 'Expired', key: 'expired', color: '#f43f5e' },
+    { label: 'Archived', key: 'archived', color: '#94a3b8' }
+  ];
+  var statusTotal = statusRows.reduce(function (sum, row) { return sum + Number((status && status[row.key]) || 0); }, 0) || 1;
+%>
+<div class="dash-head">
+    <div>
+        <h1>Manage and access your documents efficiently</h1>
+    </div>
+    <div class="dash-date"><%= todayLabel %></div>
+</div>
+
+<section class="dash-kpis">
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon blue"><i class="fa fa-file-alt"></i></div>
+        <strong><%= fmt(totals.documents) %></strong>
+        <span>Total Documents</span>
+        <small class="<%= trendClass(trends.documents) %>"><%= trends.documents.text %></small>
+    </article>
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon navy"><i class="fa fa-folder"></i></div>
+        <strong><%= fmt(totals.folders) %></strong>
+        <span>Total Folders</span>
+        <small class="<%= trendClass(trends.folders) %>"><%= trends.folders.text %></small>
+    </article>
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon purple"><i class="fa fa-users"></i></div>
+        <strong><%= fmt(totals.libraries) %></strong>
+        <span>Libraries</span>
+        <small class="flat">No change</small>
+    </article>
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon orange"><i class="fa fa-clock"></i></div>
+        <strong><%= fmt(totals.pending) %></strong>
+        <span>Pending Approval</span>
+        <small class="<%= trendClass(trends.pending) %>"><%= trends.pending.text %></small>
+    </article>
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon red"><i class="fa fa-calendar-alt"></i></div>
+        <strong><%= fmt(totals.reviewDue) %></strong>
+        <span>Review Due Soon</span>
+        <small class="<%= trendClass(trends.reviewDue) %>"><%= trends.reviewDue.text %></small>
+    </article>
+    <article class="dash-kpi">
+        <div class="dash-kpi-icon slate"><i class="fa fa-archive"></i></div>
+        <strong><%= fmt(totals.archived) %></strong>
+        <span>Archived</span>
+        <small class="flat">No change</small>
+    </article>
+</section>
+
+<section class="dash-grid">
+    <article class="dash-card">
+        <div class="dash-card-head">
+            <h3>Recent Documents</h3>
+            <a href="/library?filter=recent">View all</a>
+        </div>
+        <% if (!recentDocs.length) { %>
+            <div class="dash-empty">No recent document activity yet.</div>
+        <% } %>
+        <% recentDocs.forEach(function(doc){
+            var path = splitPath(doc.doc_path);
+            var ext = fileExt(doc.doc || doc.doc_name);
+        %>
+        <a class="dash-doc" href="/category?menu=<%= path.menu %>&submenu=<%= path.sub %>">
+            <span class="dash-file <%= fileClass(doc.doc || doc.doc_name) %>"><%= ext === 'file' ? 'DOC' : ext.toUpperCase().slice(0,3) %></span>
+            <span>
+                <b><%= doc.doc_name || doc.doc %></b>
+                <small>Modified <%= doc.accessed_datetime ? moment(doc.accessed_datetime).format('D MMM YYYY') : '' %> by <%= doc.emp_id || 'system' %></small>
+            </span>
+            <span class="dash-ext"><%= ext.toUpperCase() %></span>
+        </a>
+        <% }) %>
+    </article>
+
+    <article class="dash-card">
+        <div class="dash-card-head">
+            <h3>Documents by Category</h3>
+        </div>
+        <div class="dash-donut-wrap">
+            <canvas id="dashDonut" width="150" height="150"></canvas>
+            <ul class="dash-cat-list">
+                <% categories.forEach(function(cat, i){ %>
+                <li>
+                    <span><i class="dash-dot" style="background:<%= catColors[i % catColors.length] %>"></i><%= cat.category %></span>
+                    <strong><%= fmt(cat.total) %></strong>
+                </li>
+                <% }) %>
+                <% if (!categories.length) { %><li class="dash-empty">No category data</li><% } %>
+            </ul>
+        </div>
+    </article>
+
+    <article class="dash-card">
+        <div class="dash-card-head">
+            <h3>Document Status</h3>
+        </div>
+        <% statusRows.forEach(function(row){
+            var value = Number((status && status[row.key]) || 0);
+            var pct = Math.round((value / statusTotal) * 100);
+        %>
+        <div class="dash-status-row">
+            <span style="min-width:72px"><%= row.label %></span>
+            <div class="dash-bar"><i style="width:<%= pct %>%;background:<%= row.color %>"></i></div>
+            <span><%= fmt(value) %> (<%= pct %>%)</span>
+        </div>
+        <% }) %>
+    </article>
+</section>
+
+<section class="dash-lower">
+    <article class="dash-card">
+        <div class="dash-card-head">
+            <h3>Document Activity</h3>
+            <div class="dash-legend-inline">
+                <span style="color:#3b82f6">Uploads</span>
+                <span style="color:#10b981">Downloads</span>
+                <span style="color:#f59e0b">Views</span>
+            </div>
+        </div>
+        <canvas id="dashActivity" height="110"></canvas>
+    </article>
+    <article class="dash-card">
+        <div class="dash-card-head">
+            <h3>Upcoming Review / Expiry</h3>
+            <a href="/library?filter=expiring">View all</a>
+        </div>
+        <table class="dash-table">
+            <thead>
+                <tr>
+                    <th>Document Name</th>
+                    <th>Review Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% if (!upcoming.length) { %>
+                <tr><td colspan="3" class="dash-empty">No upcoming reviews.</td></tr>
+                <% } %>
+                <% upcoming.forEach(function(item){
+                    var due = item.review_date || item.retain_until;
+                    var overdue = due && moment(due).isBefore(moment(), 'day');
+                    var soon = due && moment(due).diff(moment(), 'days') <= 14;
+                    var label = overdue ? 'Overdue' : (soon ? 'Due soon' : 'Review');
+                    var cls = overdue ? 'over' : (soon ? 'soon' : 'ok');
+                %>
+                <tr>
+                    <td><%= item.folder_name %></td>
+                    <td><%= due ? moment(due).format('D MMM YYYY') : '—' %></td>
+                    <td><span class="dash-pill <%= cls %>"><%= label %></span></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </article>
+</section>
+<script type="application/json" id="dashChartData"><%- chartData %></script>
+<%- include('includes/app-shell-end'); -%>
+<%- include('includes/footer'); -%>

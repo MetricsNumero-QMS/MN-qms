@@ -1,0 +1,59 @@
+<%
+  var _name = (typeof displayName !== 'undefined' && displayName) ? displayName : ((typeof username !== 'undefined' && username) ? String(username).split('@')[0] : 'User');
+  var _active = typeof navActive !== 'undefined' ? navActive : '';
+  var _initial = String(_name).replace(/[^A-Za-z0-9]/g, ' ').trim().charAt(0).toUpperCase() || 'U';
+  var _notify = typeof notificationCount !== 'undefined' ? notificationCount : 0;
+  var _caps = typeof roleCaps !== 'undefined' && roleCaps ? roleCaps : {};
+  var _role = typeof roleLabel !== 'undefined' ? roleLabel : '';
+  function sideActive(key) { return _active === key ? ' is-active' : ''; }
+%>
+<script>document.body.classList.add('qms-app');</script>
+<div class="qms-shell">
+    <aside class="qms-sidebar" aria-label="Main">
+        <a class="qms-side-brand" href="/home">
+            <img src="img/MetricsNumero-logo.png" alt="MetricsNumero">
+        </a>
+        <nav class="qms-side-nav">
+        <a class="qms-side-link<%= sideActive('dashboard') %>" href="/home"><i class="fa fa-home"></i> Dashboard</a>
+        <a class="qms-side-link<%= sideActive('library') %>" href="/library"><i class="fa fa-folder-open"></i> Document Library</a>
+        <a class="qms-side-link<%= sideActive('mine') %>" href="/library?filter=mine"><i class="fa fa-file"></i> My Documents</a>
+        <a class="qms-side-link<%= sideActive('shared') %>" href="/library?filter=shared"><i class="fa fa-users"></i> Shared With Me</a>
+        <a class="qms-side-link<%= sideActive('recent') %>" href="/library?filter=recent"><i class="fa fa-clock"></i> Recent</a>
+        <a class="qms-side-link<%= sideActive('favorites') %>" href="/library?filter=favorites"><i class="fa fa-star"></i> Favorites</a>
+        <% if (_caps.canSeePending) { %>
+        <a class="qms-side-link<%= sideActive('pending') %>" href="/library?filter=pending"><i class="fa fa-hourglass-half"></i> Pending Approval</a>
+        <% } %>
+        <a class="qms-side-link<%= sideActive('expiring') %>" href="/library?filter=expiring"><i class="fa fa-calendar"></i> Expiring Documents</a>
+        <% if (_caps.canRecycle) { %>
+        <a class="qms-side-link<%= sideActive('recycle') %>" href="/library?filter=recycle"><i class="fa fa-trash"></i> Recycle Bin</a>
+        <% } %>
+        </nav>
+    </aside>
+    <div class="qms-content">
+    <header class="qms-topbar">
+        <button type="button" class="qms-menu-toggle" id="qmsMenuToggle" aria-label="Open menu"><i class="fa fa-bars"></i></button>
+        <div class="qms-top-actions">
+            <div class="qms-alert-wrap">
+                <button type="button" class="qms-icon-btn" id="qmsAlertBtn" title="Notifications" aria-label="Notifications">
+                    <i class="fa fa-bell"></i>
+                    <% if (_notify > 0) { %><span class="qms-dot"></span><% } else { %><span class="qms-dot" hidden></span><% } %>
+                </button>
+                <div class="qms-alert-menu" id="qmsAlertMenu" hidden></div>
+            </div>
+            <div class="qms-user-menu" id="qmsUserMenu">
+                <button type="button" class="qms-user-chip" id="qmsUserToggle" aria-haspopup="true" aria-expanded="false">
+                    <span class="qms-avatar"><%= _initial %></span>
+                    <span class="qms-user-meta">
+                        <span><%= _name %></span>
+                        <% if (_role) { %><small class="qms-role-badge"><%= _role %></small><% } %>
+                    </span>
+                    <i class="fa fa-chevron-down qms-user-caret" aria-hidden="true"></i>
+                </button>
+                <div class="qms-user-dropdown" role="menu">
+                    <a href="/userProfile" role="menuitem"><i class="fa fa-user"></i> View profile</a>
+                    <a href="/logout" role="menuitem"><i class="fa fa-sign-out"></i> Logout</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="qms-main">

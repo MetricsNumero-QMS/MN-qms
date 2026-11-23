@@ -1,0 +1,341 @@
+<%- include('includes/header'); -%>
+<%- include('includes/app-shell-start'); -%>
+<div class="lib-page" id="libPage"
+    data-menu="<%= menu || '' %>"
+    data-submenu="<%= submenu || '' %>"
+    data-folder="<%= folderId || '' %>"
+    data-folder-name="<%= currentFolder && currentFolder.folder_name ? currentFolder.folder_name : '' %>"
+    data-filter="<%= filter %>"
+    data-can-create="<%= canCreate ? '1' : '0' %>"
+    data-can-invite="<%= typeof canInvite !== 'undefined' && canInvite ? '1' : '0' %>"
+    data-sys-role="<%= typeof sysRole !== 'undefined' ? sysRole : '' %>"
+    data-upload="<%= uploadHref || '' %>">
+    <div class="lib-head">
+        <div>
+            <h1 class="lib-title"><i class="fa fa-file-alt"></i> <%= pageHeading %></h1>
+            <nav class="lib-crumbs" aria-label="Breadcrumb">
+                <% crumbs.forEach(function(crumb, i){ %>
+                    <% if (i) { %><span class="lib-crumb-sep" aria-hidden="true">›</span><% } %>
+                    <% if (crumb.href) { %>
+                        <a href="<%= crumb.href %>"><%= crumb.label %></a>
+                    <% } else { %>
+                        <span class="is-current"><%= crumb.label %></span>
+                    <% } %>
+                <% }) %>
+            </nav>
+        </div>
+        <div class="lib-head-actions">
+            <% if (typeof canInvite !== 'undefined' && canInvite && folderId) { %>
+            <button type="button" class="lib-ghost" id="libInviteBtn"><i class="fa fa-user-plus"></i> Invite member</button>
+            <% } %>
+            <% if (canCreate) { %>
+            <div class="lib-split" data-menu="libNewMenu">
+                <button type="button" class="lib-btn-primary" id="libNewBtn"><i class="fa fa-plus"></i> New</button>
+                <button type="button" class="lib-btn-primary lib-caret" id="libNewCaret" aria-label="More new options"><i class="fa fa-chevron-down"></i></button>
+                <div class="lib-menu" id="libNewMenu" hidden>
+                    <button type="button" id="libNewFolderMenu"><i class="fa fa-folder"></i> New folder</button>
+                    <button type="button" id="libUploadHint"><i class="fa fa-upload"></i> Upload document</button>
+                </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+
+    <div class="lib-toolbar">
+        <form class="lib-search" action="/library" method="get" role="search">
+            <% if (filter && filter !== 'library') { %><input type="hidden" name="filter" value="<%= filter %>"><% } %>
+            <% if (menu) { %><input type="hidden" name="menu" value="<%= menu %>"><% } %>
+            <% if (submenu) { %><input type="hidden" name="submenu" value="<%= submenu %>"><% } %>
+            <% if (folderId) { %><input type="hidden" name="folder" value="<%= folderId %>"><% } %>
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="search" name="q" id="libSearchInput" value="<%= searchQ %>" placeholder="Search documents, folders, or keywords..." aria-label="Search this location">
+        </form>
+        <div class="lib-tools">
+            <div class="lib-split lib-split-ghost" data-menu="libFilterMenu">
+                <button type="button" class="lib-ghost" id="libFilterBtn"><i class="fa fa-filter"></i> Filter <i class="fa fa-chevron-down"></i></button>
+                <div class="lib-menu" id="libFilterMenu" hidden>
+                    <button type="button" data-filter-kind="all" class="is-active">All types</button>
+                    <button type="button" data-filter-kind="folder">Folders</button>
+                    <button type="button" data-filter-kind="document">Documents</button>
+                </div>
+            </div>
+            <div class="lib-split lib-split-ghost" data-menu="libSortMenu">
+                <button type="button" class="lib-ghost" id="libSortBtn"><i class="fa fa-sort"></i> Sort <i class="fa fa-chevron-down"></i></button>
+                <div class="lib-menu" id="libSortMenu" hidden>
+                    <button type="button" data-sort="name" class="is-active">Name</button>
+                    <button type="button" data-sort="type">Type</button>
+                    <button type="button" data-sort="version">Version</button>
+                    <button type="button" data-sort="modified">Modified</button>
+                    <button type="button" data-sort="modifiedBy">Modified by</button>
+                    <button type="button" data-sort="size">Size</button>
+                </div>
+            </div>
+            <div class="lib-view">
+                <button type="button" class="lib-view-btn" data-view="grid" aria-label="Grid view"><i class="fa fa-th-large"></i></button>
+                <button type="button" class="lib-view-btn is-active" data-view="list" aria-label="List view"><i class="fa fa-bars"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lib-card">
+        <div class="lib-table-wrap" id="libListView">
+            <table class="lib-table">
+                <thead>
+                    <tr>
+                        <th data-sort="name">Name <i class="fa fa-sort"></i></th>
+                        <th data-sort="type">Type</th>
+                        <th data-sort="version">Version <i class="fa fa-sort"></i></th>
+                        <th data-sort="modified">Modified <i class="fa fa-sort"></i></th>
+                        <th data-sort="modifiedBy">Modified By</th>
+                        <th data-sort="size">Size</th>
+                        <th class="lib-actions-col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="libTableBody"></tbody>
+            </table>
+        </div>
+        <div class="lib-grid" id="libGridView" hidden></div>
+        <p class="lib-empty" id="libEmpty" hidden>No items found<%= searchQ ? ' for “' + searchQ + '”' : '' %>.</p>
+        <div class="lib-foot">
+            <span id="libRange">Showing 0 items</span>
+            <div class="lib-pager">
+                <button type="button" class="lib-page-btn" id="libPrev" aria-label="Previous page"><i class="fa fa-chevron-left"></i></button>
+                <span class="lib-page-num" id="libPageNum">1</span>
+                <button type="button" class="lib-page-btn" id="libNext" aria-label="Next page"><i class="fa fa-chevron-right"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lib-modal" id="libFolderModal" hidden>
+    <div class="lib-modal-card" role="dialog" aria-labelledby="libFolderTitle">
+        <h2 id="libFolderTitle">New folder</h2>
+        <p class="lib-modal-hint" id="libFolderHint"></p>
+        <form id="libFolderForm">
+            <label for="libFolderName">Folder name</label>
+            <input type="text" id="libFolderName" name="folder_name" maxlength="150" required placeholder="e.g. Policies">
+            <label for="libFolderDesc">Description</label>
+            <textarea id="libFolderDesc" name="description" rows="3" maxlength="500" placeholder="Optional"></textarea>
+            <p class="lib-modal-msg" id="libFolderMsg" hidden></p>
+            <div class="lib-modal-actions">
+                <button type="button" class="lib-ghost" id="libFolderCancel">Cancel</button>
+                <button type="submit" class="lib-btn-primary">Create</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="lib-modal" id="libPlaceModal" hidden>
+    <div class="lib-modal-card" role="dialog" aria-labelledby="libPlaceTitle">
+        <h2 id="libPlaceTitle">Copy to</h2>
+        <p class="lib-modal-hint" id="libPlaceHint">Choose the folder to use.</p>
+        <form id="libPlaceForm">
+            <div id="libPlaceTree" class="lib-tree">Loading folders...</div>
+            <input type="hidden" id="libPlaceDest" value="">
+            <p class="lib-modal-msg" id="libPlaceMsg" hidden></p>
+            <div class="lib-modal-actions">
+                <button type="button" class="lib-ghost" id="libPlaceCancel">Cancel</button>
+                <button type="submit" class="lib-btn-primary" id="libPlaceSubmit">Copy</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="lib-modal" id="libInviteModal" hidden>
+    <div class="lib-modal-card" role="dialog" aria-labelledby="libInviteTitle">
+        <h2 id="libInviteTitle">Invite member</h2>
+        <form id="libInviteForm">
+            <label for="libInviteEmail">Email address <span class="lib-req" aria-hidden="true">*</span></label>
+            <input type="email" id="libInviteEmail" required placeholder="name@company.com">
+            <%
+                var inviteDepartments = (typeof departments !== 'undefined' && departments && departments.length)
+                    ? departments
+                    : ['Admin','Bd','Flow','Global','Hr','It','Purchase','Qag','VLSI'];
+            %>
+            <div class="lib-invite-row">
+                <div>
+                    <label for="libInviteRole">Role <span class="lib-req" aria-hidden="true">*</span></label>
+                    <select id="libInviteRole" required>
+                        <option value="" selected>Select</option>
+                        <option value="member">Member</option>
+                        <% if (sysRole === 'admin') { %>
+                        <option value="admin">Admin</option>
+                        <% } %>
+                    </select>
+                </div>
+                <div>
+                    <label for="libInviteDept">Department <span class="lib-req" aria-hidden="true">*</span></label>
+                    <select id="libInviteDept" required>
+                        <option value="">Select</option>
+                        <option value="All">All</option>
+                        <% inviteDepartments.forEach(function (name) { %>
+                        <option value="<%= name %>"><%= name %></option>
+                        <% }) %>
+                    </select>
+                </div>
+                <div>
+                    <label for="libInviteVisibility">Visibility <span class="lib-req" aria-hidden="true">*</span></label>
+                    <select id="libInviteVisibility" required>
+                        <option value="" selected>Select</option>
+                        <option value="private">Private</option>
+                        <option value="public">Public</option>
+                    </select>
+                </div>
+            </div>
+            <label for="libInviteExpireBtn">Access expires (optional)</label>
+            <div class="lib-expire" id="libInviteExpire">
+                <button type="button" class="lib-expire-field" id="libInviteExpireBtn" aria-haspopup="dialog" aria-expanded="false" aria-controls="libInviteCal">
+                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                    <span id="libInviteExpireLabel" class="is-empty">Choose a date and time</span>
+                </button>
+                <button type="button" class="lib-expire-clear" id="libInviteExpireClear" hidden aria-label="Clear expiry">&times;</button>
+                <input type="hidden" id="libInviteExpiry" value="">
+                <div class="lib-cal" id="libInviteCal" hidden role="dialog" aria-label="Choose when access expires"></div>
+            </div>
+            <p class="lib-modal-msg" id="libInviteMsg" hidden></p>
+            <div class="lib-modal-actions">
+                <button type="button" class="lib-ghost" id="libInviteCancel">Cancel</button>
+                <button type="submit" class="lib-btn-primary">Send invite</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="lib-modal" id="libShareModal" hidden>
+    <div class="lib-modal-card" role="dialog" aria-labelledby="libShareTitle">
+        <h2 id="libShareTitle">Share through mail</h2>
+        <p class="lib-modal-hint" id="libShareHint">Send a formatted email with a link to this file.</p>
+        <form id="libShareForm">
+            <label for="libShareEmail">Email address</label>
+            <input type="email" id="libShareEmail" required placeholder="name@company.com">
+            <label for="libShareExpiry">Access expires (optional)</label>
+            <input type="datetime-local" id="libShareExpiry">
+            <p class="lib-modal-msg" id="libShareMsg" hidden></p>
+            <div class="lib-modal-actions">
+                <button type="button" class="lib-ghost" id="libShareCancel">Cancel</button>
+                <button type="submit" class="lib-btn-primary">Share</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="modal" id="qmsViewModal" tabindex="-1">
+    <div class="modal-dialog qms-view-dialog">
+        <div class="modal-content qms-view-modal">
+            <div class="modal-header qms-view-header">
+                <div class="qms-view-heading">
+                    <span class="qms-view-kicker">Document preview</span>
+                    <span class="qms-view-title">View file</span>
+                </div>
+                <div class="qms-view-header-actions">
+                    <button type="button" class="qms-view-update" id="qmsViewUpdate" hidden>
+                        <i class="fa fa-upload"></i> Update
+                    </button>
+                    <button type="button" class="qms-view-replace" id="qmsViewReplace" hidden>
+                        <i class="fa fa-file"></i> Update content
+                    </button>
+                    <button type="button" class="qms-view-save" id="qmsViewSave" hidden>
+                        <i class="fa fa-save"></i> Save
+                    </button>
+                    <input type="file" id="qmsViewReplaceInput" hidden accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx">
+                    <a class="qms-view-download" href="#" title="Download"><i class="fa fa-download"></i></a>
+                    <button type="button" class="close-btn-design qms-view-close" data-dismiss="modal" aria-label="Close">
+                        <i class="fa fa-times fa-2x" style="color:#D23B68"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="modal-body qms-view-body">
+                <div class="qms-edit-hint" hidden>Edit the content of this original document. Save keeps the same Word, PDF, PowerPoint, or Excel file and format.</div>
+                <div class="qms-replace-note" hidden></div>
+                <div class="qms-view-loading">Loading preview…</div>
+                <iframe class="qms-view-frame" title="Document preview"></iframe>
+                <div class="qms-view-html"></div>
+                <div class="qms-view-table-wrap"></div>
+                <div class="qms-view-error"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="lib-modal" id="libRenameModal" hidden>
+    <div class="lib-modal-card" role="dialog" aria-labelledby="libRenameTitle">
+        <h2 id="libRenameTitle">Rename</h2>
+        <p class="lib-modal-hint" id="libRenameHint">Enter a new name.</p>
+        <form id="libRenameForm">
+            <label for="libRenameName">Name</label>
+            <input type="text" id="libRenameName" maxlength="150" required>
+            <p class="lib-modal-msg" id="libRenameMsg" hidden></p>
+            <div class="lib-modal-actions">
+                <button type="button" class="lib-ghost" id="libRenameCancel">Cancel</button>
+                <button type="submit" class="lib-btn-primary">Rename</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="lib-modal" id="libDeleteModal" hidden>
+    <div class="lib-modal-card lib-delete-card" role="dialog" aria-labelledby="libDeleteTitle">
+        <div class="lib-delete-icon" aria-hidden="true"><i class="fa fa-trash"></i></div>
+        <h2 id="libDeleteTitle">Delete item</h2>
+        <p class="lib-modal-hint" id="libDeleteHint">This item will be moved to the Recycle Bin.</p>
+        <p class="lib-delete-name" id="libDeleteName"></p>
+        <p class="lib-modal-msg is-err" id="libDeleteMsg" hidden></p>
+        <div class="lib-modal-actions">
+            <button type="button" class="lib-ghost" id="libDeleteCancel">Cancel</button>
+            <button type="button" class="lib-btn-danger" id="libDeleteConfirm">Delete</button>
+        </div>
+    </div>
+</div>
+
+<div class="lib-modal" id="libOpenAppModal" hidden>
+    <div class="lib-modal-card lib-notice-card" role="dialog" aria-labelledby="libOpenAppTitle">
+        <div class="lib-notice-icon" aria-hidden="true"><i class="fa fa-desktop"></i></div>
+        <h2 id="libOpenAppTitle">Open in app</h2>
+        <p class="lib-modal-hint" id="libOpenAppText">Allow the browser prompt to open this file in the desktop app.</p>
+        <div class="lib-modal-actions">
+            <button type="button" class="lib-ghost" id="libOpenAppDownload">Download</button>
+            <button type="button" class="lib-btn-primary" id="libOpenAppOk">OK</button>
+        </div>
+    </div>
+</div>
+
+<div class="lib-modal" id="libUploadHintModal" hidden>
+    <div class="lib-modal-card lib-notice-card" role="dialog" aria-labelledby="libUploadHintTitle">
+        <div class="lib-notice-icon" aria-hidden="true"><i class="fa fa-folder-open"></i></div>
+        <h2 id="libUploadHintTitle">Select a folder</h2>
+        <p class="lib-modal-hint" id="libUploadHintText">Open a folder before uploading a document. Uploads are not available from a category.</p>
+        <div class="lib-modal-actions">
+            <button type="button" class="lib-btn-primary" id="libUploadHintOk">OK</button>
+        </div>
+    </div>
+</div>
+
+<div class="lib-modal lib-modal-over-view" id="libUpdateChoiceModal" hidden>
+    <div class="lib-modal-card lib-notice-card" role="dialog" aria-labelledby="libUpdateChoiceTitle">
+        <div class="lib-notice-icon" aria-hidden="true"><i class="fa fa-sync"></i></div>
+        <h2 id="libUpdateChoiceTitle">Save document</h2>
+        <p class="lib-modal-hint" id="libUpdateChoiceText">Keep this file in the current version, or save it as a new version.</p>
+        <div class="lib-update-choices">
+            <button type="button" class="lib-update-choice" id="libUpdateKeepCurrent">
+                <strong>Keep current version</strong>
+                <span>Replace the file and keep the same version number.</span>
+            </button>
+            <button type="button" class="lib-update-choice" id="libUpdateNewVersion">
+                <strong>Update as new version</strong>
+                <span>Keep the previous file and create the next version.</span>
+            </button>
+        </div>
+        <p class="lib-modal-msg is-err" id="libUpdateChoiceMsg" hidden></p>
+        <div class="lib-modal-actions">
+            <button type="button" class="lib-ghost" id="libUpdateChoiceCancel">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<div class="lib-drop" id="libDrop" hidden>Drop files to upload into this folder</div>
+<input type="file" id="libUploadInput" hidden multiple>
+<input type="file" id="libReplaceInput" hidden accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx">
+<script type="application/json" id="libItemsJson"><%- itemsJson %></script>
+<%- include('includes/version-history'); -%>
+<%- include('includes/app-shell-end'); -%>
+<%- include('includes/footer'); -%>
