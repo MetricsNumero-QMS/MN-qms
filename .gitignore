@@ -13,3 +13,6 @@ build/
 
 # Logs
 *.log
+
+#Mail API Key
+config/mail.config.js
